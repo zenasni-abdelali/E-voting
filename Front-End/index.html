@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Voting - Accueil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bg-custom-gradient {
+            background: linear-gradient(135deg, #4F46E5 0%, #9333EA 50%, #DB2777 100%);
+        }
+        .step-shadow { box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.35); }
+        .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 35px -20px rgba(15, 23, 42, 0.35); }
+    </style>
+</head>
+<body class="bg-[#F8FAFC]">
+
+    <section class="bg-custom-gradient text-white pt-10 pb-24 px-4 text-center relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/30">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+                <span id="home-hero-title-line1">Votez simplement,</span> <br>
+                <span id="home-hero-title-highlight" class="text-[#EAFF00]">en toute confiance</span>
+            </h1>
+
+            <p id="home-hero-subtitle" class="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto font-light">
+                Une plateforme de vote moderne, intuitive et sécurisée, pensée pour chaque utilisateur.
+            </p>
+
+            <button id="hero-start-btn" class="bg-white text-[#6366F1] px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center mx-auto group">
+                <span id="home-hero-cta">Commencer</span>
+                <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+            <svg class="relative block w-full h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.43,147.3,126,211.39,111.41,269,98.24,280,71.21,321.39,56.44Z" fill="#F8FAFC"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 id="home-why-title" class="text-3xl md:text-4xl font-bold text-[#1E293B] mb-4">Pourquoi choisir notre plateforme ?</h2>
+            <p id="home-why-subtitle" class="text-slate-500 text-lg">Une expérience claire, rapide et sécurisée du début à la fin</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 card-hover">
+                <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-[#1E293B]">Plateforme sécurisée</h3>
+                <p class="text-slate-500 leading-relaxed">Votre participation est protégée pour garantir un vote fiable et serein</p>
+            </div>
+            <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 card-hover">
+                <div class="w-14 h-14 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-[#1E293B]">Simplicité d'usage</h3>
+                <p class="text-slate-500 leading-relaxed">Une interface claire qui permet de voter facilement, sans complexité</p>
+            </div>
+            <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 card-hover">
+                <div class="w-14 h-14 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-[#1E293B]">Disponibilité 24/7</h3>
+                <p class="text-slate-500 leading-relaxed">Disponible à tout moment pendant la période officielle du scrutin</p>
+            </div>
+            <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 card-hover">
+                <div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-[#1E293B]">Anonymat garanti</h3>
+                <p class="text-slate-500 leading-relaxed">Votre choix reste confidentiel pour préserver la liberté de décision</p>
+            </div>
+             <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 card-hover">
+                <div class="w-14 h-14 bg-yellow-50 text-yellow-500 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-[#1E293B]">Résultats en temps réel</h3>
+                <p class="text-slate-500 leading-relaxed">Consultez les résultats dès la clôture avec une présentation claire</p>
+            </div>
+             <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 card-hover">
+    <div class="w-14 h-14 bg-red-50 text-red-400 rounded-2xl flex items-center justify-center mb-6">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+        </svg>
+    </div>
+    <h3 class="text-xl font-bold mb-4 text-[#1E293B]">Confidentialité</h3>
+    <p class="text-slate-500 leading-relaxed">Vos données personnelles sont protégées et ne sont jamais partagées avec des tiers</p>
+</div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-white px-4">
+    <div class="max-w-6xl mx-auto text-center">
+        <h2 id="home-how-title" class="text-3xl font-bold text-[#1E293B] mb-16">Comment voter ?</h2>
+
+        <div class="grid md:grid-cols-4 gap-12 relative">
+            <div class="relative group">
+                <div class="w-20 h-20 bg-[#6366F1] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 relative step-shadow transform transition-transform group-hover:scale-105">
+                    1
+                    <span class="absolute -top-1 -right-1 bg-[#FBBF24] p-1.5 rounded-full border-4 border-white shadow-sm">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </span>
+                </div>
+                <h3 class="font-bold text-lg mb-3 text-[#1E293B]">Connexion</h3>
+                <p class="text-slate-500 text-sm leading-relaxed px-2">
+                    Connectez-vous à votre espace personnel de vote
+                </p>
+            </div>
+
+            <div class="relative group">
+                <div class="w-20 h-20 bg-[#6366F1] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 relative step-shadow transform transition-transform group-hover:scale-105">
+                    2
+                    <span class="absolute -top-1 -right-1 bg-[#FBBF24] p-1.5 rounded-full border-4 border-white shadow-sm">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    </span>
+                </div>
+                <h3 class="font-bold text-lg mb-3 text-[#1E293B]">Choix</h3>
+                <p class="text-slate-500 text-sm leading-relaxed px-2">
+                    Consultez les candidats et sélectionnez votre option
+                </p>
+            </div>
+
+            <div class="relative group">
+                <div class="w-20 h-20 bg-[#6366F1] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 relative step-shadow transform transition-transform group-hover:scale-105">
+                    3
+                    <span class="absolute -top-1 -right-1 bg-[#FBBF24] p-1.5 rounded-full border-4 border-white shadow-sm">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path d="M5 13l4 4L19 7"></path></svg>
+                    </span>
+                </div>
+                <h3 class="font-bold text-lg mb-3 text-[#1E293B]">Confirmation</h3>
+                <p class="text-slate-500 text-sm leading-relaxed px-2">
+                    Vérifiez vos informations puis validez votre vote
+                </p>
+            </div>
+
+            <div class="relative group">
+                <div class="w-20 h-20 bg-[#6366F1] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 relative step-shadow transform transition-transform group-hover:scale-105">
+                    4
+                    <span class="absolute -top-1 -right-1 bg-[#FBBF24] p-1.5 rounded-full border-4 border-white shadow-sm">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </span>
+                </div>
+                <h3 class="font-bold text-lg mb-3 text-[#1E293B]">Résultats</h3>
+                <p class="text-slate-500 text-sm leading-relaxed px-2">
+                    Consultez les résultats officiels une fois le scrutin terminé
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white py-8 text-center relative">
+    <h2 id="home-final-title" class="text-3xl md:text-4xl font-semibold text-gray-800">
+        Prêt à faire entendre votre voix ?
+    </h2>
+    <p id="home-final-subtitle" class="mt-4 text-gray-500 max-w-2xl mx-auto mb-8">
+        Rejoignez une plateforme de vote simple, fiable et sécurisée
+    </p>
+    <button id="footer-start-btn" class="bg-[#6366F1] text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-xl
+                   hover:bg-[#4F46E5] hover:scale-105 hover:shadow-2xl hover:-translate-y-1
+                   active:scale-95 transition-all duration-300 ease-in-out">
+        <span id="home-final-cta">Accéder à mon espace →</span>
+    </button>
+</section>
+
+    <footer class="bg-[#0F172A] text-white py-12 px-6">
+       <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-12 border-b border-white/10 pb-12">
+         <div class="text-center md:col-span-4">
+           <div class="flex items-center justify-center space-x-3 mb-4">
+              <div class="p-2 bg-indigo-600 rounded-lg">
+                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              </div>
+              <span class="text-2xl font-bold tracking-tight">E-Voting</span>
+           </div>
+           <p class="text-slate-400 text-sm leading-relaxed">La plateforme de vote électronique sécurisée et accessible à tous.</p>
+         </div>
+       </div>
+       <div class="text-center pt-8 text-slate-500 text-xs">© 2026 E-Voting System. Tous droits réservés.</div>
+    </footer>
+<script src="script.js"></script>
+</body>
+</html>
