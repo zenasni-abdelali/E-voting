@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - E-Voting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-fade { transition: opacity 0.4s ease-in-out; }
+        .role-photo-panel {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+        .role-photo-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.9), rgba(15, 23, 42, 0.74));
+            z-index: 0;
+        }
+        .admin-photo-panel {
+            background-image: url("https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80");
+        }
+        .role-panel-content {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 overflow-hidden">
+
+    <div id="main-container" class="relative bg-white w-full max-w-[1100px] h-[680px] rounded-[2rem] shadow-2xl flex overflow-hidden border border-white">
+
+        <div id="left-panel" class="w-1/2 h-full bg-white flex flex-col justify-center p-16 z-20">
+
+            <div id="signup-form-side" class="content-fade opacity-0 hidden">
+                <div class="mb-8">
+                    <div class="bg-purple-600 w-12 h-12 rounded-xl flex items-center justify-center mb-5 shadow-lg shadow-purple-100">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.14c2.39-5.456 2.39-10.892 0-16.348m1.107 14.907A10.011 10.011 0 0112 12V3m0 0l3 3m-3-3l-3 3"></path></svg>
+                    </div>
+                    <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Cr&eacute;er un compte admin</h1>
+                    <p class="text-slate-500 mt-2">Ajoutez vos informations pour acc&eacute;der &agrave; la gestion des &eacute;lections.</p>
+                </div>
+
+                <form id="admin-reg-form" onsubmit="event.preventDefault(); startInscription();" class="space-y-4">
+                    <input type="text" id="admin-fullname" placeholder="Nom complet" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                    <input type="email" id="admin-email" placeholder="Email professionnel" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                    <input type="password" id="admin-mdp" placeholder="Mot de passe" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                    <button type="submit" class="w-full bg-purple-600 text-white py-4 rounded-xl font-bold hover:bg-purple-700 shadow-lg shadow-purple-200 transition-all active:scale-95">Cr&eacute;er le compte</button>
+                </form>
+
+                <p class="mt-8 text-center text-sm text-slate-500">D&eacute;j&agrave; inscrit ? <button onclick="toggleAuth()" class="text-purple-600 font-bold hover:underline">Se connecter</button></p>
+            </div>
+
+            <div id="otp-side" class="content-fade opacity-0 hidden">
+                <div class="mb-8">
+                    <div class="bg-amber-500 w-12 h-12 rounded-xl flex items-center justify-center mb-5 shadow-lg shadow-amber-100">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h1 class="text-3xl font-bold text-slate-900 tracking-tight">V&eacute;rification admin</h1>
+                    <p class="text-slate-500 mt-2">Entrez le code envoy&eacute; &agrave; votre adresse email.</p>
+                </div>
+                <form id="otp-verify-form" onsubmit="event.preventDefault(); verifyOTP();" class="space-y-6">
+                    <input type="text" maxlength="6" id="otp-input" placeholder="000000" class="w-full text-center tracking-[1em] text-2xl font-bold px-4 py-4 bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                    <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all">V&eacute;rifier le code</button>
+                </form>
+                <button onclick="location.reload()" class="mt-6 w-full text-sm text-slate-400 hover:text-purple-600 font-medium">Retour au formulaire</button>
+            </div>
+
+            <div id="login-desc-side" class="content-fade opacity-100">
+                <p class="text-sm font-bold uppercase tracking-[0.18em] text-purple-600">Administrateur</p>
+                <h2 class="mt-3 text-4xl font-bold text-slate-900 leading-tight">G&eacute;rez les &eacute;lections avec confiance</h2>
+                <p class="mt-5 text-slate-500 leading-relaxed">Connectez-vous pour pr&eacute;parer, suivre et superviser les scrutins depuis un espace clair et s&eacute;curis&eacute;.</p>
+                <div class="mt-8 space-y-3 text-sm font-semibold text-slate-700">
+                    <div class="flex items-center gap-3"><span class="h-2.5 w-2.5 rounded-full bg-purple-600"></span><span>Cr&eacute;er et configurer les &eacute;lections</span></div>
+                    <div class="flex items-center gap-3"><span class="h-2.5 w-2.5 rounded-full bg-purple-600"></span><span>G&eacute;rer les &eacute;lecteurs et les candidats</span></div>
+                    <div class="flex items-center gap-3"><span class="h-2.5 w-2.5 rounded-full bg-purple-600"></span><span>Consulter le suivi et les r&eacute;sultats</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="right-panel" class="role-photo-panel admin-photo-panel w-1/2 h-full flex flex-col justify-center p-16 z-10 text-white">
+
+            <div id="signup-desc-side" class="role-panel-content content-fade opacity-0 hidden">
+                <p class="text-sm font-bold uppercase tracking-[0.18em] text-purple-100">R&ocirc;le admin</p>
+                <h2 class="mt-3 text-4xl font-bold leading-tight">Piloter une &eacute;lection sans complexit&eacute;</h2>
+                <p class="mt-6 text-purple-50/90 leading-relaxed">Votre compte admin permet d'organiser les scrutins, d'ajouter les participants et de garder une vue compl&egrave;te sur la plateforme.</p>
+            </div>
+
+            <div id="login-form-side" class="role-panel-content content-fade opacity-100">
+                <h1 class="text-3xl font-bold text-white mb-2">Connexion admin</h1>
+                <p class="text-purple-100 mb-8">Acc&eacute;dez &agrave; votre tableau de bord.</p>
+                <form onsubmit="event.preventDefault(); loginAdmin();" class="space-y-4">
+                    <input type="email" id="login-email" placeholder="Email" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-purple-100 focus:ring-2 focus:ring-white outline-none transition-all">
+                    <input type="password" id="login-password" placeholder="Mot de passe" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-purple-100 focus:ring-2 focus:ring-white outline-none transition-all">
+                    <button class="w-full bg-white text-purple-700 py-4 rounded-xl font-bold hover:bg-purple-50 transition-all shadow-xl">Se connecter</button>
+                </form>
+                <button type="button" onclick="openPasswordResetDialog()" class="mt-4 w-full text-center text-sm text-purple-100 hover:text-white font-semibold">Mot de passe oubli&eacute; ?</button>
+                <p class="mt-8 text-center text-sm text-purple-100">Nouveau sur la plateforme ? <button onclick="toggleAuth()" class="text-white font-bold hover:underline">Cr&eacute;er un compte</button></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="password-reset-overlay" class="hidden fixed inset-0 z-50 bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6">
+            <div class="flex items-start justify-between gap-4 mb-5">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Nouveau mot de passe</h2>
+                    <p class="text-sm text-slate-500 mt-1">Validation par email et OTP</p>
+                </div>
+                <button type="button" onclick="closePasswordResetDialog()" class="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+            </div>
+
+            <p id="reset-message" class="min-h-6 text-sm font-semibold text-purple-600 mb-4"></p>
+
+            <form id="reset-email-step" onsubmit="event.preventDefault(); requestPasswordReset();" class="space-y-4">
+                <input type="email" id="reset-email" placeholder="Email administrateur" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-xl font-bold hover:bg-purple-700 transition-all">Envoyer OTP</button>
+            </form>
+
+            <form id="reset-otp-step" onsubmit="event.preventDefault(); verifyPasswordResetOtp();" class="hidden space-y-4">
+                <input type="text" maxlength="6" id="reset-otp" placeholder="000000" class="w-full text-center tracking-[0.7em] text-xl font-bold px-4 py-3 bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-black transition-all">V&eacute;rifier OTP</button>
+            </form>
+
+            <form id="reset-password-step" onsubmit="event.preventDefault(); confirmPasswordReset();" class="hidden space-y-4">
+                <input type="password" id="reset-new-password" placeholder="Nouveau mot de passe" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                <input type="password" id="reset-confirm-password" placeholder="Confirmer le mot de passe" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none transition-all">
+                <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-xl font-bold hover:bg-purple-700 transition-all">Modifier le mot de passe</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./administrateur-inscription.js"></script>
+    <script>
+        function showOTP() {
+            const signupForm = document.getElementById('signup-form-side');
+            const otpSide = document.getElementById('otp-side');
+            signupForm.style.opacity = "0";
+            setTimeout(() => {
+                signupForm.classList.add('hidden');
+                otpSide.classList.remove('hidden');
+                setTimeout(() => { otpSide.style.opacity = "1"; }, 50);
+            }, 400);
+        }
+
+        let isLogin = true;
+        function toggleAuth() {
+            isLogin = !isLogin;
+            const signupForm = document.getElementById('signup-form-side');
+            const otpSide = document.getElementById('otp-side');
+            const loginDesc = document.getElementById('login-desc-side');
+            const signupDesc = document.getElementById('signup-desc-side');
+            const loginForm = document.getElementById('login-form-side');
+
+            otpSide.classList.add('hidden');
+            [signupForm, signupDesc, loginDesc, loginForm].forEach(el => el.style.opacity = "0");
+
+            setTimeout(() => {
+                signupForm.classList.toggle('hidden', isLogin);
+                signupDesc.classList.toggle('hidden', isLogin);
+                loginDesc.classList.toggle('hidden', !isLogin);
+                loginForm.classList.toggle('hidden', !isLogin);
+                setTimeout(() => {
+                    if (isLogin) {
+                        loginDesc.style.opacity = "1";
+                        loginForm.style.opacity = "1";
+                    } else {
+                        signupForm.style.opacity = "1";
+                        signupDesc.style.opacity = "1";
+                    }
+                }, 50);
+            }, 400);
+        }
+    </script>
+</body>
+</html>

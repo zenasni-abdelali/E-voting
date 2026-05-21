@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Électeur - E-Voting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f6ff; }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="p-8">
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="bg-white rounded-[2rem] p-6 mb-10 card-shadow flex justify-between items-center max-w-6xl mx-auto">
+        <div class="flex items-center space-x-4">
+            <div class="bg-indigo-50 w-14 h-14 rounded-2xl flex items-center justify-center">
+                <svg class="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">Bienvenue</h1>
+                <p class="text-slate-500 text-sm">Email: <span id="elector-email-display" class="font-medium">-</span></p>
+            </div>
+        </div>
+
+        <nav class="flex items-center space-x-8 text-slate-600 font-medium">
+            <button id="elector-open-profile" type="button" class="flex items-center hover:text-indigo-600 transition-colors">
+                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                Profil
+            </button>
+            <button onclick="handleLogout()" class="flex items-center hover:text-red-500 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Déconnexion
+            </button>
+        </nav>
+    </header>
+
+    <!-- ═══ MAIN ═══ -->
+    <main class="max-w-6xl mx-auto space-y-8">
+        <section class="bg-white rounded-[2rem] p-8 card-shadow">
+            <h2 id="elector-participation-title" class="text-xl font-bold text-slate-800 mb-2">Demandes de participation</h2>
+            <p class="text-slate-500">Demandez l'accès aux élections. Votre administrateur peut accepter ou refuser votre demande.</p>
+            <p id="elector-dashboard-feedback" class="mt-3 text-sm font-medium text-slate-500"></p>
+        </section>
+
+        <section id="elector-elections-list" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></section>
+    </main>
+
+    <!-- ═══ MODAL: Profil Électeur ═══ -->
+    <div id="elector-profile-overlay" class="hidden fixed inset-0 z-[82] bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] border border-slate-200 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] max-w-lg w-full overflow-hidden transition-all transform scale-100">
+
+            <div class="relative pt-12 pb-6 px-8 text-center bg-gradient-to-b from-slate-50 to-white border-b border-slate-100">
+                <button id="elector-profile-close" type="button" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:shadow-sm transition-all">&times;</button>
+                <div class="mx-auto w-20 h-20 bg-indigo-50 rounded-3xl flex items-center justify-center mb-4 shadow-inner">
+                    <svg class="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900">Profil Électeur</h3>
+                <p class="text-sm text-slate-500 mt-1">Gérez vos informations personnelles</p>
+            </div>
+
+            <div class="p-8 space-y-5">
+                <div class="group">
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 ml-1">Nom Complet</label>
+                    <div class="mt-1 relative">
+                        <input id="elector-profile-name" type="text" readonly class="w-full border border-slate-200 rounded-2xl px-4 py-3 bg-slate-50 text-slate-600 font-medium cursor-default focus:outline-none transition-all">
+                        <div class="absolute inset-y-0 right-4 flex items-center">
+                            <svg class="w-4 h-4 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between ml-1">
+                        <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Adresse Email</label>
+                        <button id="elector-edit-email-btn" type="button" class="text-indigo-600 hover:text-indigo-700 text-xs font-bold transition-colors">MODIFIER</button>
+                    </div>
+                    <input id="elector-profile-email" type="text" readonly class="mt-1 w-full border border-slate-200 rounded-2xl px-4 py-3 bg-slate-50 text-slate-600 font-medium focus:outline-none transition-all">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between ml-1">
+                        <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Mot de Passe</label>
+                        <button id="elector-edit-password-btn" type="button" class="text-indigo-600 hover:text-indigo-700 text-xs font-bold transition-colors">SÉCURITÉ</button>
+                    </div>
+                    <input type="password" readonly value="********" class="mt-1 w-full border border-slate-200 rounded-2xl px-4 py-3 bg-slate-50 text-slate-400 tracking-widest focus:outline-none transition-all">
+                </div>
+
+                <div class="space-y-4 pt-2">
+                    <div id="elector-email-change-panel" class="hidden animate-in fade-in slide-in-from-top-2 p-5 rounded-2xl border border-indigo-100 bg-indigo-50/50 space-y-3">
+                        <p class="text-sm font-bold text-indigo-900 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" /></svg>
+                            Nouveau courriel
+                        </p>
+                        <input id="elector-new-email" type="email" placeholder="Nouvel email" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+                        <input id="elector-confirm-email" type="email" placeholder="Confirmer l'email" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+                        <button id="elector-save-email-btn" type="button" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-lg shadow-indigo-200 transition-all active:scale-[0.98]">Mettre à jour l'email</button>
+                    </div>
+
+                    <div id="elector-password-change-panel" class="hidden animate-in fade-in slide-in-from-top-2 p-5 rounded-2xl border border-slate-200 bg-slate-50 space-y-4">
+                        <p class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                            Modification sécurisée (OTP)
+                        </p>
+                        <div id="elector-pass-step-1">
+                            <button id="elector-send-otp-btn" type="button" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-black text-white font-bold transition-all">Envoyer le code de vérification</button>
+                        </div>
+                        <div id="elector-pass-step-2" class="hidden space-y-3">
+                            <input id="elector-password-otp" type="text" maxlength="6" placeholder="Entrez le code à 6 chiffres" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-center text-lg tracking-[0.5em] font-mono focus:ring-2 focus:ring-slate-500/20 focus:border-slate-500 outline-none transition-all">
+                            <button id="elector-verify-otp-btn" type="button" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all">Vérifier le code</button>
+                        </div>
+                        <div id="elector-pass-step-3" class="hidden space-y-3">
+                            <input id="elector-new-password" type="password" placeholder="Nouveau mot de passe" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all">
+                            <input id="elector-confirm-password" type="password" placeholder="Confirmer mot de passe" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all">
+                            <button id="elector-save-password-btn" type="button" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-200 transition-all">Confirmer le nouveau mot de passe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Vote ═══ -->
+    <div id="vote-overlay" class="hidden fixed inset-0 z-[60] bg-slate-950/55 backdrop-blur-[2px] flex items-center justify-center p-4 sm:p-6">
+        <div class="bg-white rounded-[1.75rem] shadow-[0_25px_80px_-20px_rgba(15,23,42,0.45)] max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200/80 relative">
+            <button type="button" onclick="closeVoteModal()" class="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 w-10 h-10 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 flex items-center justify-center text-xl leading-none transition-colors" aria-label="Fermer">&times;</button>
+            <div class="shrink-0 px-8 pt-8 pb-5 border-b border-slate-100 bg-gradient-to-br from-slate-50 via-white to-indigo-50/40">
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-indigo-600/90 mb-2">Vote anonyme protégé</p>
+                <h3 id="vote-modal-election-title" class="text-2xl sm:text-[1.65rem] font-bold text-slate-900 tracking-tight pr-12"></h3>
+                <p class="text-sm text-slate-600 mt-2 max-w-2xl leading-relaxed">Chaque bulletin est chiffré avant envoi ; les choix ci-dessous sont présentés sans identité nominative à l&apos;écran pour préserver votre discrétion.</p>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 py-6">
+                <div id="vote-password-panel" class="rounded-2xl border border-slate-200/90 bg-slate-50/60 p-5 mb-6">
+                    <label for="vote-password" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Mot de passe (rétablissement de session uniquement)</label>
+                    <input type="password" id="vote-password" autocomplete="current-password" class="w-full px-4 py-3.5 border border-slate-200 rounded-xl bg-white shadow-sm focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 outline-none transition-shadow" placeholder="Mot de passe électeur">
+                    <p class="text-[11px] text-slate-500 mt-2">Affiché seulement si vous n&apos;avez pas encore ouvert une session depuis la page de connexion dans cet onglet. Le mot de passe ne quitte pas votre navigateur lors du vote.</p>
+                </div>
+                <p class="text-sm font-semibold text-slate-800 mb-4">Choix disponibles</p>
+                <div id="vote-verification-panel" class="hidden mb-5 rounded-2xl border border-slate-200 bg-slate-50 p-5"></div>
+                <div id="vote-candidates-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+                <p id="vote-modal-error" class="text-sm text-red-600 mt-4 hidden px-1"></p>
+            </div>
+            <div class="shrink-0 px-8 py-4 border-t border-slate-100 bg-slate-50/90 flex justify-end">
+                <button type="button" onclick="closeVoteModal()" class="px-6 py-3 rounded-xl border border-slate-200 font-semibold text-slate-600 hover:bg-white transition-colors">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Résultats ═══ -->
+    <div id="results-overlay" class="hidden fixed inset-0 z-[65] bg-slate-950/55 backdrop-blur-[2px] flex items-center justify-center p-4 sm:p-6">
+        <div class="bg-white rounded-[1.75rem] shadow-[0_25px_80px_-20px_rgba(15,23,42,0.45)] max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200/80 relative">
+            <button type="button" onclick="closeResultsModal()" class="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 w-10 h-10 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 flex items-center justify-center text-xl leading-none transition-colors" aria-label="Fermer">&times;</button>
+            <div class="shrink-0 px-8 pt-8 pb-5 border-b border-slate-100 bg-gradient-to-br from-slate-50 via-white to-fuchsia-50/40">
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-fuchsia-700/90 mb-2">Résultats publiés</p>
+                <h3 id="results-modal-election-title" class="text-2xl sm:text-[1.65rem] font-bold text-slate-900 tracking-tight pr-12">Résultats</h3>
+                <p class="text-sm text-slate-600 mt-2 max-w-2xl leading-relaxed">Consultez les résultats officiellement publiés et signés pour cette élection.</p>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 py-6">
+                <div id="results-loading" class="text-sm text-slate-500">Chargement des résultats...</div>
+                <div id="results-empty" class="hidden rounded-2xl border border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
+                    Aucun résultat publié pour le moment.
+                </div>
+                <div id="results-content" class="hidden space-y-5">
+                    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+                        <p class="text-xs text-slate-500">Date de publication</p>
+                        <p id="results-published-at" class="text-sm font-semibold text-slate-800 mt-1">-</p>
+                    </div>
+                    <div id="results-table-wrap" class="hidden rounded-2xl border border-slate-200 overflow-hidden bg-white">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="text-left text-slate-500 bg-slate-50">
+                                    <th class="py-3 px-4">Candidat</th>
+                                    <th class="py-3 px-4 text-center">Voix</th>
+                                    <th class="py-3 px-4 text-center">Part</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="results-bars-wrap" class="hidden rounded-2xl border border-slate-200 p-5 bg-gradient-to-b from-slate-50 to-white">
+                        <div id="results-bars" class="flex items-end justify-center gap-4 h-48"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="shrink-0 px-8 py-4 border-t border-slate-100 bg-slate-50/90 flex justify-end">
+                <button type="button" onclick="closeResultsModal()" class="px-6 py-3 rounded-xl border border-slate-200 font-semibold text-slate-600 hover:bg-white transition-colors">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Confirmation déconnexion ═══ -->
+    <div id="logout-permission-overlay" class="hidden fixed inset-0 z-[78] bg-slate-950/40 backdrop-blur-[2px] items-center justify-center px-4 pt-6 sm:pt-8">
+        <div class="w-full max-w-lg rounded-2xl border border-violet-100 bg-white shadow-[0_24px_70px_-26px_rgba(88,28,135,0.62)] overflow-hidden">
+            <div class="px-6 py-5 border-b border-violet-100 bg-gradient-to-r from-slate-50 via-white to-violet-50/80 flex items-start gap-4">
+                <div class="w-11 h-11 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3H9.75m9 0l-3-3m3 3l-3 3"></path></svg>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">Permission requise</p>
+                    <h3 class="text-lg font-bold text-slate-900 mt-1">Quitter l'espace électeur ?</h3>
+                    <p class="text-sm text-slate-600 mt-1 leading-relaxed">La cl&eacute; de signature stock&eacute;e pour cette session sera retir&eacute;e avant le retour &agrave; l'accueil.</p>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-white flex flex-col sm:flex-row sm:justify-end gap-3">
+                <button id="logout-permission-cancel" type="button" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50">Rester connect&eacute;</button>
+                <button id="logout-permission-continue" type="button" class="px-5 py-2.5 rounded-xl bg-violet-700 text-white font-semibold hover:bg-violet-800 shadow-lg shadow-violet-200">Continuer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Confirmation action critique ═══ -->
+    <div id="confirm-overlay" class="hidden fixed inset-0 z-[78] bg-slate-950/40 backdrop-blur-[2px] items-center justify-center px-4">
+        <div class="w-full max-w-lg rounded-2xl border border-red-100 bg-white shadow-[0_24px_70px_-26px_rgba(185,28,28,0.4)] overflow-hidden">
+            <div class="px-6 py-5 border-b border-red-100 bg-gradient-to-r from-slate-50 via-white to-red-50/80 flex items-start gap-4">
+                <div class="w-11 h-11 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-red-600">Action Critique</p>
+                    <h3 id="confirm-title" class="text-lg font-bold text-slate-900 mt-1">Confirmation</h3>
+                    <p id="confirm-message" class="text-sm text-slate-600 mt-1 leading-relaxed"></p>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-white flex flex-col sm:flex-row sm:justify-end gap-3">
+                <button id="confirm-no" type="button" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-colors">Annuler</button>
+                <button id="confirm-yes" type="button" class="px-5 py-2.5 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 shadow-lg shadow-red-200 transition-all">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Toast Stack ═══ -->
+    <div id="toast-stack" class="fixed z-[90] top-6 left-1/2 -translate-x-1/2 space-y-3 pointer-events-none"></div>
+
+    <!-- ═══ Help Button ═══ -->
+    <div class="fixed bottom-8 right-8">
+        <button class="bg-slate-800 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+            <span class="text-xl font-bold">?</span>
+        </button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/0.10.0/forge.min.js"></script>
+    <script src="./vote-electeur.js"></script>
+    <script src="./electeur-dashboard.js"></script>
+</body>
+</html>
